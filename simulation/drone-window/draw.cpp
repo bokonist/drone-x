@@ -1,11 +1,22 @@
 #include <GL/glut.h>
 #include <SOIL/SOIL.h>
 #include <drone.h>
+#include <bits/stdc++.h>
+
+using namespace std;
 
 int width, height;
 static GLuint tex1;
 int movementY,movementX;
 unsigned char* image;
+
+struct obstacle
+{
+	int x,y;
+	int type;
+};
+
+vector<obstacle> obstacleList;
 
 #define SPACE 0
 #define DRONE 1
@@ -67,7 +78,7 @@ void update()
 }
 
 
-void character()
+void drawDrone()
 {
 	texSelect(DRONE);
 	glPushMatrix();
@@ -97,7 +108,7 @@ void drawObstacle(int posx,int posy, int type)
 		glEnd();
 	glPopMatrix();
 }
-
+int temp=0;
 void draw()
 {
 	glClearColor (0.0, 0.0, 0.0, 0.0);
@@ -114,7 +125,7 @@ void draw()
 	glEnable(GL_TEXTURE_2D);
 	// glBindTexture(GL_TEXTURE_2D, tex1);
 	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-	texSelect(0);
+	texSelect(SPACE);
 	glPushMatrix();
 		glTranslatef(worldX,0,0);
 		glBegin(GL_QUADS);
@@ -124,13 +135,25 @@ void draw()
 			glTexCoord2f(0.0, -1.0); glVertex3f(0,1080,-1.1);
 		glEnd();
 	glPopMatrix();
-	character();
+	drawDrone();
 
-	if(rand()%2==0)
+	for(obstacle &obj : obstacleList)
 	{
-		drawObstacle(1920+rand()%(1920-2600),rand()%800, CLOUD);
+		drawObstacle(obj.x, obj.y, obj.type);
 	}
-
+	if(temp==300)
+	{
+		temp=0;
+		int tx= 2000+(rand()%600);
+		int ty= rand()%800;
+		obstacle obj;
+		obj.x=tx;
+		obj.y=ty;
+		obj.type= CLOUD;
+		obstacleList.push_back(obj);
+	}
+	else
+		temp++;
 	glutSwapBuffers();
 	glDisable(GL_TEXTURE_2D);
 }
