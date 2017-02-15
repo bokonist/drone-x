@@ -7,6 +7,10 @@ static GLuint tex1;
 int movementY,movementX;
 unsigned char* image;
 
+#define SPACE 0
+#define DRONE 1
+#define CLOUD 2
+
 void init()
 {
 	glShadeModel(GL_FLAT);
@@ -20,20 +24,20 @@ void init()
 
 void texSelect(int textureNumber)
 {    
-	if(textureNumber==0)
+	if(textureNumber==SPACE)
 	{
 		//glBindTexture(GL_TEXTURE_2D, tex1);
 		image = SOIL_load_image( "res/terrains/space-terrain.png", &width, &height, 0, SOIL_LOAD_RGBA );
 		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
 		SOIL_free_image_data( image );
 	}
-	if(textureNumber==1)
+	if(textureNumber==DRONE)
 	{
 		image = SOIL_load_image( "res/drones/black-drone.png", &width, &height, 0, SOIL_LOAD_RGBA );
 		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
 		SOIL_free_image_data( image );
 	}
-	if(textureNumber==2)
+	if(textureNumber==CLOUD)
 	{
 		image = SOIL_load_image( "res/obstacles/cloud.png", &width, &height, 0, SOIL_LOAD_RGBA );
 		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
@@ -65,7 +69,7 @@ void update()
 
 void character()
 {
-	texSelect(1);
+	texSelect(DRONE);
 	glPushMatrix();
 		glTranslatef(40,500,0);
 		glTranslatef(movementX,movementY,0);
@@ -79,9 +83,9 @@ void character()
 	glPopMatrix();
 }
 
-void drawObstacle(int posx,int posy)
+void drawObstacle(int posx,int posy, int type)
 {
-	texSelect(2);
+	texSelect(type);
 	glPushMatrix();
 		glTranslatef(posx,posy,0);
 		glTranslatef(objX,0,0);
@@ -122,10 +126,10 @@ void draw()
 	glPopMatrix();
 	character();
 
-	drawObstacle(2000,400);
-	drawObstacle(2400,600);
-	drawObstacle(2200,800);
-	drawObstacle(2600,220);
+	drawObstacle(2000,400, CLOUD);
+	drawObstacle(2400,600, CLOUD);
+	drawObstacle(2200,800, CLOUD);
+	drawObstacle(2600,220, CLOUD);
 
 	glutSwapBuffers();
 	glDisable(GL_TEXTURE_2D);
