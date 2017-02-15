@@ -126,10 +126,10 @@ void draw()
 	glPopMatrix();
 	character();
 
-	drawObstacle(2000,400, CLOUD);
-	drawObstacle(2400,600, CLOUD);
-	drawObstacle(2200,800, CLOUD);
-	drawObstacle(2600,220, CLOUD);
+	if(rand()%2==0)
+	{
+		drawObstacle(1920+rand()%(1920-2600),rand()%800, CLOUD);
+	}
 
 	glutSwapBuffers();
 	glDisable(GL_TEXTURE_2D);
