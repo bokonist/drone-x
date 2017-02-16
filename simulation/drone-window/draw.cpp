@@ -21,47 +21,46 @@ vector<obstacle> obstacleList;
 #define SPACE 0
 #define DRONE 1
 #define CLOUD 2
+#define SPACETEXTURE texName[0]
+#define DRONETEXTURE texName[1]
+#define CLOUDTEXTURE texName[2]
 
 void init()
 {
-glShadeModel(GL_FLAT);
-glEnable(GL_BLEND);
-glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		
+	glShadeModel(GL_FLAT);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	glGenTextures(3,texName); // 3 textures generated, identified by numbers stored in texName
-	
-        glBindTexture(GL_TEXTURE_2D, texName[0]);  //texture 1 active 
+
+	glBindTexture(GL_TEXTURE_2D, texName[0]);  //texture 1 active 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	image = SOIL_load_image( "res/terrains/space-terrain.png", &width, &height, 0, SOIL_LOAD_RGBA );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
+	SOIL_free_image_data( image );
 
-		image = SOIL_load_image( "res/terrains/space-terrain.png", &width, &height, 0, SOIL_LOAD_RGBA );
-		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-		SOIL_free_image_data( image );
-	
- 	glBindTexture(GL_TEXTURE_2D, texName[1]);	
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glBindTexture(GL_TEXTURE_2D, texName[1]);	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	
-		image = SOIL_load_image( "res/drones/black-drone.png", &width, &height, 0, SOIL_LOAD_RGBA );
-		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-		SOIL_free_image_data( image );
-	
+	image = SOIL_load_image( "res/drones/black-drone.png", &width, &height, 0, SOIL_LOAD_RGBA );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
+	SOIL_free_image_data( image );
+
 	glBindTexture(GL_TEXTURE_2D, texName[2]);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	image = SOIL_load_image( "res/obstacles/cloud.png", &width, &height, 0, SOIL_LOAD_RGBA );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
+	SOIL_free_image_data( image );
 
-		image = SOIL_load_image( "res/obstacles/cloud.png", &width, &height, 0, SOIL_LOAD_RGBA );
-		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-		SOIL_free_image_data( image );
-	
-glEnable(GL_TEXTURE_2D);
-	 
+	glEnable(GL_TEXTURE_2D);
 }
 
 int objX;
@@ -87,7 +86,7 @@ void update()
 
 void drawDrone()
 {
-glBindTexture(GL_TEXTURE_2D, texName[1]); // drone texture active
+	glBindTexture(GL_TEXTURE_2D, DRONETEXTURE); // drone texture active
 	glPushMatrix();
 		glTranslatef(40,500,0);
 		glTranslatef(movementX,movementY,0);
@@ -103,7 +102,7 @@ glBindTexture(GL_TEXTURE_2D, texName[1]); // drone texture active
 
 void drawObstacle(int posx,int posy, int type)
 {
-glBindTexture(GL_TEXTURE_2D, texName[2]);
+	glBindTexture(GL_TEXTURE_2D, CLOUDTEXTURE);
 	glPushMatrix();
 		glTranslatef(posx,posy,0);
 		glTranslatef(objX,0,0);
@@ -130,7 +129,7 @@ void draw()
 		glVertex3f(0,1040,-1);
 	glEnd();
 	*/
-	glBindTexture(GL_TEXTURE_2D, texName[0]); // world texture active
+	glBindTexture(GL_TEXTURE_2D, SPACETEXTURE); // world texture active
 	glPushMatrix();
 		glTranslatef(worldX,0,0);
 		glBegin(GL_QUADS);
@@ -161,5 +160,4 @@ void draw()
 	else
 		temp++;
 	glutSwapBuffers();
-
 }
