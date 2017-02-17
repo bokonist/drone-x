@@ -1,4 +1,4 @@
-# drone-x
+# drone-x {work in progress}
 
 1. **in progress**:
 	1. making the simulation of a drone in openGL
