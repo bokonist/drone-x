@@ -72,7 +72,8 @@ int main(int argc, char** argv)
    glutInitWindowPosition(100, 100);
    glutCreateWindow("drone-x");
    glutFullScreen();
-   init();
+   initTextures();
+   glutIgnoreKeyRepeat(1);  // keyboard repeat off
    glutDisplayFunc(draw); //in draw.cpp
    glutIdleFunc(mixedStepLoop);
    glutReshapeFunc(reshape);
