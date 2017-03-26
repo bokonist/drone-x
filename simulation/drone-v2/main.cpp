@@ -76,15 +76,15 @@ int main(int argc, char** argv)
    //glutFullScreen();
    
    //.... Game mode rendering
-   glutGameModeString("1280x720");
-   if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE))
+   glutGameModeString("1920x1080");
+   if(glutGameModeGet(GLUT_GAME_MODE_POSSIBLE))
    {
-     glutEnterGameMode();
+      glutEnterGameMode();
    }
    else 
    {
-    printf("The select resolution mode is not available, change GameModeString \n");
-    exit(1);
+      printf("The select resolution mode is not available, change GameModeString \n");
+      exit(1);
    }
   /*// glutInitWindowSize(1280, 720);
    glutInitWindowPosition(100, 100);
