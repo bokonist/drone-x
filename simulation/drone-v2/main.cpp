@@ -76,7 +76,7 @@ int main(int argc, char** argv)
    //glutFullScreen();
    
    //.... Game mode rendering
-   glutGameModeString("1280x720");
+   glutGameModeString("1360x768");
    if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE))
    {
      glutEnterGameMode();
