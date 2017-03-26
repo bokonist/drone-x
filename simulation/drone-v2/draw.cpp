@@ -31,175 +31,53 @@ obstacle obj;
 #define LAYER4 texName[16]
 #define CLOUDTEXTURE texName[3]
 
-
-void init()
+void init1Texture(const string s,int ii)
 {
-	glShadeModel(GL_FLAT);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glGenTextures(17,texName); // 3 textures generated, identified by numbers stored in texName
-
-	// SKY
-	glBindTexture(GL_TEXTURE_2D, texName[0]);  
+	glBindTexture(GL_TEXTURE_2D, texName[ii]);  
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	image = SOIL_load_image( "res/terrains/layer-1.png", &width, &height, 0, SOIL_LOAD_RGBA );
+	image = SOIL_load_image( s.c_str(), &width, &height, 0, SOIL_LOAD_RGBA );
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
 	SOIL_free_image_data( image );
 
-	//TREE FAR 
-	glBindTexture(GL_TEXTURE_2D, texName[1]);	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	image = SOIL_load_image( "res/terrains/layer-2.png", &width, &height, 0, SOIL_LOAD_RGBA );
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
+}
 
-	//GROUND
-	glBindTexture(GL_TEXTURE_2D, texName[2]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	image = SOIL_load_image( "res/terrains/layer-3.png", &width, &height, 0, SOIL_LOAD_RGBA );   
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
+void initTextures()
+{
+	vector<string> s;
+	s.push_back("res/terrains/layer-1.png");
+	s.push_back("res/terrains/layer-2.png");
+	s.push_back("res/terrains/layer-3.png");
+	s.push_back("res/obstacles/frame1.png");
+	s.push_back("res/drones/seq0000.png");
+	s.push_back("res/drones/seq0001.png");
+	s.push_back("res/drones/seq0002.png");
+	s.push_back("res/drones/seq0003.png");
+	s.push_back("res/drones/seq0004.png");
+	s.push_back("res/drones/seq0005.png");
+	s.push_back("res/drones/seq0006.png");
+	s.push_back("res/drones/seq0007.png");
+	s.push_back("res/drones/seq0008.png");
+	s.push_back("res/drones/seq0009.png");
+	s.push_back("res/drones/seq0010.png");
+	s.push_back("res/drones/seq0011.png");
+	s.push_back("res/terrains/layer-4.png");
 
-	//CLOUD
-	glBindTexture(GL_TEXTURE_2D, texName[3]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	image = SOIL_load_image( "res/obstacles/frame1.png", &width, &height, 0, SOIL_LOAD_RGBA );   
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
+glGenTextures(s.size(),texName);
 
-	//....DRONE TEXTURE FRAMES
-	glBindTexture(GL_TEXTURE_2D, texName[4]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	image = SOIL_load_image( "res/drones/seq0000.png", &width, &height, 0, SOIL_LOAD_RGBA );   
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
-
-	glBindTexture(GL_TEXTURE_2D, texName[5]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	image = SOIL_load_image( "res/drones/seq0001.png", &width, &height, 0, SOIL_LOAD_RGBA );   
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
-
-	glBindTexture(GL_TEXTURE_2D, texName[6]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	image = SOIL_load_image( "res/drones/seq0002.png", &width, &height, 0, SOIL_LOAD_RGBA );   
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
-
-	glBindTexture(GL_TEXTURE_2D, texName[7]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	image = SOIL_load_image( "res/drones/seq0003.png", &width, &height, 0, SOIL_LOAD_RGBA );   
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
-
-	glBindTexture(GL_TEXTURE_2D, texName[8]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	image = SOIL_load_image( "res/drones/seq0004.png", &width, &height, 0, SOIL_LOAD_RGBA );   
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
-
-	glBindTexture(GL_TEXTURE_2D, texName[9]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	image = SOIL_load_image( "res/drones/seq0005.png", &width, &height, 0, SOIL_LOAD_RGBA );   
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
-
-	glBindTexture(GL_TEXTURE_2D, texName[10]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	image = SOIL_load_image( "res/drones/seq0006.png", &width, &height, 0, SOIL_LOAD_RGBA );   
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
-
-	glBindTexture(GL_TEXTURE_2D, texName[11]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	image = SOIL_load_image( "res/drones/seq0007.png", &width, &height, 0, SOIL_LOAD_RGBA );   
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
-
-	glBindTexture(GL_TEXTURE_2D, texName[12]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	image = SOIL_load_image( "res/drones/seq0008.png", &width, &height, 0, SOIL_LOAD_RGBA );   
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
-
-	glBindTexture(GL_TEXTURE_2D, texName[13]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	image = SOIL_load_image( "res/drones/seq0009.png", &width, &height, 0, SOIL_LOAD_RGBA );   
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
-
-	glBindTexture(GL_TEXTURE_2D, texName[14]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	image = SOIL_load_image( "res/drones/seq0010.png", &width, &height, 0, SOIL_LOAD_RGBA );   
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
-
-	glBindTexture(GL_TEXTURE_2D, texName[15]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	image = SOIL_load_image( "res/drones/seq0011.png", &width, &height, 0, SOIL_LOAD_RGBA );   
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
-
-	//..TREE NEAR
-	glBindTexture(GL_TEXTURE_2D, texName[16]);	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	image = SOIL_load_image( "res/terrains/layer-4.png", &width, &height, 0, SOIL_LOAD_RGBA );
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image );
-	SOIL_free_image_data( image );
-
-	glEnable(GL_TEXTURE_2D);
+for(int ii=0;ii<s.size();ii++)
+{
+	init1Texture(s[ii],ii);
+}
+	s.clear();
+	//.. Transparency and shading parameters
+	glShadeModel(GL_FLAT);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_TEXTURE_2D);	
 }
 
 float groundX,skyX,treeXfar,treeXnear;
@@ -258,17 +136,16 @@ void resetFunc()
 void hitDetection()
 {
 	for(ii=0;ii<obstacleList.size();ii++)
-	{
-
-		if(((abs((movementX+40)-(obstacleList[ii].x+100+obstacleList[ii].objdisp)))<=100) && (abs((movementY+500)-(obstacleList[ii].y+50))<=90))
+	{	// difference in distance between drone initial X and obstacle size	         	 Difference in distance between drone centre Y and obstacle centre Y , -30 because drone png has excessive transparent part																					
+		if(((abs( (movementX)-( obstacleList[ii].x+obstacleList[ii].objdisp) ) )<= (resX*0.059+resX*0.088-50) ) && ( abs( (movementY+resY/2+resY*0.20/2)-(obstacleList[ii].y+resY*0.052/2) ) <= (resY*0.052/2+resY*0.20/2-30) ) )
 		{
-			//printf("\t\tHIT:%d %d %d %d \n",abs((movementX+40)-(obstacleList[ii].x+100+obstacleList[ii].objdisp)),abs((movementY+500)-(obstacleList[ii].y+50)),(movementY+500),(obstacleList[ii].y+50));
-			//printf("\t\tYOUR SCORE: %f \n",score);
-			//exit(0);
-			resetFunc();	
+		//printf("\t\tHIT:%d %d %d %d \n",abs((movementX)-(obstacleList[ii].x+obstacleList[ii].objdisp)),abs((movementY+resY/2)-(obstacleList[ii].y)),(movementY+resY/2),(obstacleList[ii].y));
+		resetFunc();	
 		}
 	}
+
 }
+
 
 void initialiseList()
 {
@@ -459,7 +336,7 @@ void draw()
 		glBindTexture(GL_TEXTURE_2D, texName[dronePhy]);
 		glCallList(dlist[3]);
 		glPopMatrix();
-		//hitDetection();
+		hitDetection();
 	}	
 	glutSwapBuffers();
 }
