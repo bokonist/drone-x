@@ -136,7 +136,7 @@ void resetFunc()
 void hitDetection()
 {
 	for(ii=0;ii<obstacleList.size();ii++)
-	{	// difference in distance between drone initial X and obstacle size					 Difference in distance between drone centre Y and obstacle centre Y , -30 because drone png has excessive transparent part																					
+	{	// difference in distance between drone initial X and obstacle size	         	 Difference in distance between drone centre Y and obstacle centre Y , -30 because drone png has excessive transparent part																					
 		if(((abs( (movementX)-( obstacleList[ii].x+obstacleList[ii].objdisp) ) )<= (resX*0.059+resX*0.088-50) ) && ( abs( (movementY+resY/2+resY*0.20/2)-(obstacleList[ii].y+resY*0.052/2) ) <= (resY*0.052/2+resY*0.20/2-30) ) )
 		{
 		//printf("\t\tHIT:%d %d %d %d \n",abs((movementX)-(obstacleList[ii].x+obstacleList[ii].objdisp)),abs((movementY+resY/2)-(obstacleList[ii].y)),(movementY+resY/2),(obstacleList[ii].y));
