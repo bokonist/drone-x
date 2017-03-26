@@ -76,14 +76,20 @@ int main(int argc, char** argv)
    //glutFullScreen();
    
    //.... Game mode rendering
-     glutGameModeString("1280x720");
+   glutGameModeString("1280x720");
    if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE))
+   {
      glutEnterGameMode();
-   else {
+   }
+   else 
+   {
     printf("The select resolution mode is not available, change GameModeString \n");
     exit(1);
    }
-   
+  /*// glutInitWindowSize(1280, 720);
+   glutInitWindowPosition(100, 100);
+   glutCreateWindow("drone-x");
+   glutFullScreen();*/
    initTextures();  // texture initialisation
    glutIgnoreKeyRepeat(1);  // keyboard repeat off
    glutDisplayFunc(draw); //in draw.cpp
