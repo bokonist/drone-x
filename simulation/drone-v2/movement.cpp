@@ -13,7 +13,7 @@ void movePhysics()
 		// ...UP KEY ANIMATION  7*4=28
 		if(inputKey[ii]=='U')
 		{
-			//if((movementY+(resY/2)+50)<resY)
+			if( movementY <= ( resY-( (resY/2) + (resY*0.20) ) ) )  //Up Boundary check
 			movementY+=0.0047*resX;
 			cntU++;
 		}					
@@ -28,6 +28,7 @@ void movePhysics()
 		//...DOWN KEY ANIMATION  7*4=28
 		if(inputKey[ii]=='D')
 		{
+			if( movementY >= -( resY/2 - (resY*9)/100 ) ) // Down boundary check
 			movementY-=0.0047*resX;
 			cntD++;
 		}	
