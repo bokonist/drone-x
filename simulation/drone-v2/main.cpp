@@ -83,13 +83,9 @@ int main(int argc, char** argv)
    }
    else 
    {
-      printf("The select resolution mode is not available, change GameModeString \n");
+      printf("The select resolution mode is not available, change GameModeString to correct resolution\n");
       exit(1);
    }
-  /*// glutInitWindowSize(1280, 720);
-   glutInitWindowPosition(100, 100);
-   glutCreateWindow("drone-x");
-   glutFullScreen();*/
    initTextures();  // texture initialisation
    glutIgnoreKeyRepeat(1);  // keyboard repeat off
    glutDisplayFunc(draw); //in draw.cpp
