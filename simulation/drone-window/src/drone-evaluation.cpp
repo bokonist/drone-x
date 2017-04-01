@@ -167,12 +167,18 @@ bool drone_evaluate(Organism *org)
     //Load and activate the network on each input till drone is destroyed
     while(org->droneIsAlive) 
     {
-        cout<<"drone is alive";
+     //   cout<<"drone is alive";
         in[0]=1.0;
+        in[2]=0;
+        in[3]=0;
+        in[4]=0;
         in[1]=org->normalized_y;
-        in[2]=(obstacleList.front()).norm_y;
-        in[3]=(obstacleList.at(1)).norm_y;
-        in[4]=(obstacleList.at(2)).norm_y;
+        if(obstacleList.size()>=1)
+            in[2]=(obstacleList.front()).norm_y;
+        if(obstacleList.size() >=2)
+            in[3]=(obstacleList.at(1)).norm_y;
+        if(obstacleList.size() >= 3)
+            in[4]=(obstacleList.at(2)).norm_y;
         net->load_sensors(in);
         //Relax net and get output
         success=net->activate();
@@ -197,8 +203,12 @@ bool drone_evaluate(Organism *org)
             inputKey.push_back('D');
         }
         if(score!=0)
+        {
+            cout<<"curscore"<<score<<endl;
             org->fitness=score;
+        }
         mixedStepLoop();
+        draw();
         net->flush();
     }
 
