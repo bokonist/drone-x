@@ -254,11 +254,7 @@ void renderStrokeFont(int x,int y,int z,const char* temp)
 int opt1;
 void draw()
 {
-	if(!firstRun)
-	{
-		NEAT::Population *p=0;
-    	p = drone_test(100);
-    }
+	
 	glClearColor (0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	if(opt1==0)
@@ -367,7 +363,12 @@ void draw()
 		glPopMatrix();
 		hitDetection();
 	}	
-	firstRun=false;
+	if(firstRun)
+	{
+		firstRun=false;
+		NEAT::Population *p=0;
+    	p = drone_test(100);
+    }
 	glutSwapBuffers();
 }
 

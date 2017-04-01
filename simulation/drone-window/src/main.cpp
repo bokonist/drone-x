@@ -56,13 +56,13 @@ int main(int argc, char** argv)
    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
    
    //.... Window rendering
-   /*glutInitWindowSize(1280, 720);
+   glutInitWindowSize(1280, 720);
    glutInitWindowPosition(100, 100);
    glutCreateWindow("drone-x");
    glutFullScreen();
-   */
+   
    //.... Game mode rendering
-   glutGameModeString("1920x1080");
+   /*glutGameModeString("1920x1080");
    if(glutGameModeGet(GLUT_GAME_MODE_POSSIBLE))
    {
       glutEnterGameMode();
@@ -71,7 +71,7 @@ int main(int argc, char** argv)
    {
       printf("The select resolution mode is not available, change GameModeString to correct resolution\n");
       exit(1);
-   }
+   }*/
    initTextures();  // texture initialisation
    initNeat();
    glutIgnoreKeyRepeat(1);  // keyboard repeat off

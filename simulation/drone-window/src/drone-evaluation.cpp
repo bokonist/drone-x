@@ -42,7 +42,7 @@ Population *drone_test(int gens)
     cout<<"Reading in Genome id "<<id<<endl;
     start_genome=new Genome(id,iFile);
     iFile.close();
-
+    cout<<NEAT::num_runs;
     for(expcount=0;expcount<NEAT::num_runs;expcount++) 
     {
       //Spawn the Population
@@ -195,7 +195,7 @@ bool drone_evaluate(Organism *org)
         {
             inputKey.push_back('D');
         }
-        
+
         mixedStepLoop();
         net->flush();
     }
