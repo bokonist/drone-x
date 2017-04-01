@@ -155,7 +155,7 @@ bool drone_evaluate(Organism *org)
       {1.0,1.0,0.0},
       {1.0,1.0,1.0}
     };*/
-    double in[5];
+    double in[7]; // bias, org-x, org-y, obstacle1-x, obstacle1-y, obstacle2-x, obstacle2-y
 
     net=org->net;
     numnodes=((org->gnome)->nodes).size();
@@ -169,17 +169,23 @@ bool drone_evaluate(Organism *org)
     while(org->droneIsAlive) 
     {
      //   cout<<"drone is alive";
-        in[0]=1.0;
-        in[2]=0;
-        in[3]=0;
+        in[0]=1.0; //bias
+        in[1]=org->normalized_x;
+        in[2]=org->normalized_y;
+        in[3]=0;//defaults
         in[4]=0;
-        in[1]=org->normalized_y;
+        in[5]=0;
+        in[6]=0;
         if(obstacleList.size()>=1)
-            in[2]=(obstacleList.front()).norm_y;
+        {
+            in[3]=(obstacleList.front()).norm_x;
+            in[4]=(obstacleList.front()).norm_y;
+        }
         if(obstacleList.size() >=2)
-            in[3]=(obstacleList.at(1)).norm_y;
-        if(obstacleList.size() >= 3)
-            in[4]=(obstacleList.at(2)).norm_y;
+        {
+            in[5]=(obstacleList.at(1)).norm_x;
+            in[6]=(obstacleList.at(1)).norm_y;
+        }
         net->load_sensors(in);
         //Relax net and get output
         success=net->activate();
