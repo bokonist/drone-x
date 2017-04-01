@@ -28,6 +28,7 @@ int ii;
 class obstacle obj;
 
 bool firstRun=true;
+bool droneAlive=true;
 
 void mixedStepLoop() // to update frame
 {
@@ -142,6 +143,7 @@ void resetSimulation() // to reset game
 	treeXfar=0;
 	treeXnear=0;
 	score=0;
+	droneAlive=true;
 	movementX=0;
 	movementY=0;
 	obstacleList.clear();
@@ -155,7 +157,8 @@ void hitDetection()
 		{
 		//printf("\t\tHIT:%d %d %d %d \n",abs((movementX)-(obstacleList[ii].x+obstacleList[ii].objdisp)),abs((movementY+resY/2)-(obstacleList[ii].y)),(movementY+resY/2),(obstacleList[ii].y));
 			cout<<int(score)<<endl;
-			resetSimulation(); //start from beginning	
+			droneAlive=false;
+			 //start from beginning	
 		}
 	}
 

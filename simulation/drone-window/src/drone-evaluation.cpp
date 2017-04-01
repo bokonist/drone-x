@@ -126,6 +126,7 @@ Population *drone_test(int gens)
 
 bool drone_evaluate(Organism *org) 
 {
+    cout<<"new organism\n";
     Network *net;
     double out[2]; //The two outputs
     double this_out; //The current output
@@ -206,14 +207,15 @@ bool drone_evaluate(Organism *org)
         }
         if(score!=0)
         {
-            cout<<"curscore"<<score<<endl;
+            //cout<<"curscore"<<score<<endl;
             org->fitness=score;
         }
         mixedStepLoop();
         draw();
+        org->droneIsAlive= droneAlive;
         net->flush();
     }
-
+    resetSimulation();
     if (success) 
     {
         /*errorsum=(fabs(out[0])+fabs(1.0-out[1])+fabs(1.0-out[2])+fabs(out[3]));
@@ -251,6 +253,7 @@ bool drone_evaluate(Organism *org)
 
 int drone_epoch(Population *pop,int generation,char *filename,int &winnernum,int &winnergenes,int &winnernodes) 
 {
+    cout<<"new generation\n";
     vector<Organism*>::iterator curorg;
     vector<Species*>::iterator curspecies;
     //char cfilename[100];
