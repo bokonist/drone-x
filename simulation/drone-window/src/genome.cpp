@@ -207,7 +207,7 @@ Genome::Genome(int id, std::ifstream &iFile) {
 			curwordnum = wordcount + 1;
 
             ss.getline(argline, 1024);
-            //std::cout << "New gene: " << ss.str() << std::endl;
+            std::cout << "New gene: " << ss.str() << std::endl;
 			//Allocate the new Gene
             newgene=new Gene(argline,traits,nodes);
 

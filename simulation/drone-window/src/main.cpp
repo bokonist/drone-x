@@ -56,11 +56,11 @@ int main(int argc, char** argv)
    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
    
    //.... Window rendering
-   //glutInitWindowSize(1280, 720);
-   //glutInitWindowPosition(100, 100);
-   //glutCreateWindow("drone-x");
-   //glutFullScreen();
-   
+   /*glutInitWindowSize(1280, 720);
+   glutInitWindowPosition(100, 100);
+   glutCreateWindow("drone-x");
+   glutFullScreen();
+   */
    //.... Game mode rendering
    glutGameModeString("1920x1080");
    if(glutGameModeGet(GLUT_GAME_MODE_POSSIBLE))

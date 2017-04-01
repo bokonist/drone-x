@@ -195,6 +195,7 @@ bool drone_evaluate(Organism *org)
         {
             inputKey.push_back('D');
         }
+        
         mixedStepLoop();
         net->flush();
     }
