@@ -37,7 +37,7 @@ double syncDrone;
 
 void initNeat()
 {
-    NEAT::load_neat_params("../neat_settings.ne",true);
+    NEAT::load_neat_params("neat_settings.ne",true);
 }
 
 int main(int argc, char** argv)

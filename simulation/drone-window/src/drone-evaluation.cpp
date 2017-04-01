@@ -31,7 +31,7 @@ Population *drone_test(int gens)
     memset (genes, 0, NEAT::num_runs * sizeof(int));
     memset (nodes, 0, NEAT::num_runs * sizeof(int));
 
-    ifstream iFile("/home/jay/gitfiles/drone-x/simulation/drone-window/dronestartgenes",ios::in);
+    ifstream iFile("dronestartgenes",ios::in);
 
     cout<<"START DRONE TEST"<<endl;
 
@@ -167,6 +167,7 @@ bool drone_evaluate(Organism *org)
     //Load and activate the network on each input till drone is destroyed
     while(org->droneIsAlive) 
     {
+        cout<<"drone is alive";
         in[0]=1.0;
         in[1]=org->normalized_y;
         in[2]=(obstacleList.front()).norm_y;
@@ -195,7 +196,8 @@ bool drone_evaluate(Organism *org)
         {
             inputKey.push_back('D');
         }
-
+        if(score!=0)
+            org->fitness=score;
         mixedStepLoop();
         net->flush();
     }
@@ -206,7 +208,7 @@ bool drone_evaluate(Organism *org)
         org->fitness=pow((4.0-errorsum),2);
         org->error=errorsum;*/
         errorsum=0;
-        org->fitness=score;
+        //org->fitness=score;
         org->error=errorsum;
     }
     else 
@@ -250,7 +252,7 @@ int drone_epoch(Population *pop,int generation,char *filename,int &winnernum,int
     //Evaluate each organism on a test
     for(curorg=(pop->organisms).begin();curorg!=(pop->organisms).end();++curorg) 
     {
-        /*if (drone_evaluate(*curorg)) 
+        if (drone_evaluate(*curorg)) 
         {
             win=true;
             winnernum=(*curorg)->gnome->genome_id;
@@ -262,7 +264,7 @@ int drone_epoch(Population *pop,int generation,char *filename,int &winnernum,int
               //(*curorg)->gnome->print_to_filename("drone_optimal");
               //cout<<"DUMPED OPTIMAL"<<endl;
             }
-        }*/
+        }
     }
 
     //Average and max their fitnesses for dumping to file and snapshot
