@@ -58,23 +58,23 @@ void mixedStepLoop() // to update frame
 void initTextures()
 {
 	vector<string> s;
-	s.push_back("../res/terrains/layer-1.png");
-	s.push_back("../res/terrains/layer-2.png");
-	s.push_back("../res/terrains/layer-3.png");
-	s.push_back("../res/obstacles/frame1.png");
-	s.push_back("../res/drones/seq0000.png");
-	s.push_back("../res/drones/seq0001.png");
-	s.push_back("../res/drones/seq0002.png");
-	s.push_back("../res/drones/seq0003.png");
-	s.push_back("../res/drones/seq0004.png");
-	s.push_back("../res/drones/seq0005.png");
-	s.push_back("../res/drones/seq0006.png");
-	s.push_back("../res/drones/seq0007.png");
-	s.push_back("../res/drones/seq0008.png");
-	s.push_back("../res/drones/seq0009.png");
-	s.push_back("../res/drones/seq0010.png");
-	s.push_back("../res/drones/seq0011.png");
-	s.push_back("../res/terrains/layer-4.png");
+	s.push_back("res/terrains/layer-1.png");
+	s.push_back("res/terrains/layer-2.png");
+	s.push_back("res/terrains/layer-3.png");
+	s.push_back("res/obstacles/frame1.png");
+	s.push_back("res/drones/seq0000.png");
+	s.push_back("res/drones/seq0001.png");
+	s.push_back("res/drones/seq0002.png");
+	s.push_back("res/drones/seq0003.png");
+	s.push_back("res/drones/seq0004.png");
+	s.push_back("res/drones/seq0005.png");
+	s.push_back("res/drones/seq0006.png");
+	s.push_back("res/drones/seq0007.png");
+	s.push_back("res/drones/seq0008.png");
+	s.push_back("res/drones/seq0009.png");
+	s.push_back("res/drones/seq0010.png");
+	s.push_back("res/drones/seq0011.png");
+	s.push_back("res/terrains/layer-4.png");
 
 	glGenTextures(s.size(),texName);
 

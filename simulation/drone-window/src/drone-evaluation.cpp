@@ -197,10 +197,12 @@ bool drone_evaluate(Organism *org)
         if(out[0]>=0.5)
         {
             inputKey.push_back('U');
+            org->movesMade++;
         }
         if(out[1]>= 0.5)
         {
             inputKey.push_back('D');
+            org->movesMade++;
         }
         if(score!=0)
         {
