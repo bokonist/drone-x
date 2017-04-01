@@ -3,6 +3,7 @@ using namespace std;
 extern double queuedMilliseconds,prev0,fps,responseTime,score,syncDrone;
 extern int movementY,movementX,speed,dronePhy;
 extern int resX,resY;
+extern bool droneAlive;
 
 class obstacle // data structure for obstacles
 {
@@ -21,3 +22,4 @@ void mixedStepLoop();
 void draw();
 void update();
 void movePhysics();
+void resetSimulation();
