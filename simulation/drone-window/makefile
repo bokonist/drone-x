@@ -15,46 +15,46 @@ drone: build/neat.o build/drone.o build/network.o build/nnode.o build/link.o bui
 	
 	$(CC) $(CFLAGS) $(CPPFLAGS)  $^ -o $@ $(LIBS) ## removed -c 
 
-build/neat.o: src/neat.cpp include/neat.h
+build/neat.o: src/neat.cpp
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-build/network.o: src/network.cpp include/network.h include/neat.h build/neat.o
+build/network.o: src/network.cpp  build/neat.o
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-build/nnode.o: src/nnode.cpp include/nnode.h
+build/nnode.o: src/nnode.cpp 
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-build/link.o: src/link.cpp include/link.h
+build/link.o: src/link.cpp 
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-build/trait.o: src/trait.cpp include/trait.h
+build/trait.o: src/trait.cpp 
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-build/gene.o: src/gene.cpp include/gene.h
+build/gene.o: src/gene.cpp 
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-build/genome.o: src/genome.cpp include/genome.h
+build/genome.o: src/genome.cpp 
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-build/innovation.o: src/innovation.cpp include/innovation.h
+build/innovation.o: src/innovation.cpp 
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-build/organism.o: src/organism.cpp include/organism.h
+build/organism.o: src/organism.cpp 
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-build/species.o: src/species.cpp include/species.h include/organism.h
+build/species.o: src/species.cpp 
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-build/population.o: src/population.cpp include/population.h include/organism.h
+build/population.o: src/population.cpp
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-build/drone-evaluation.o: src/drone-evaluation.cpp include/drone-evaluation.h include/network.h include/species.h build/drone.o
+build/drone-evaluation.o: src/drone-evaluation.cpp  build/drone.o
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@ $(LIBS)
 
-build/drone.o: include/drone.h src/drone.cpp build/main.o
+build/drone.o:  src/drone.cpp build/main.o
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@ $(LIBS)
 
-build/main.o: src/main.cpp include/neat.h include/population.h
+build/main.o: src/main.cpp 
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@ $(LIBS)
 
 build:

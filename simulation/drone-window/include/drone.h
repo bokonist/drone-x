@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-extern double queuedMilliseconds,prev0,fps,responseTime,score;
+extern double queuedMilliseconds,prev0,fps,responseTime,score,syncDrone;
 extern int movementY,movementX,speed,dronePhy;
 extern int resX,resY;
 
