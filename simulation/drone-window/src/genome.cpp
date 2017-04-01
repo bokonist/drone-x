@@ -114,8 +114,9 @@ Genome::Genome(int id, std::ifstream &iFile) {
 	//int pause;
 
 	genome_id=id;
-
+	//std::cout<<"here";
 	iFile.getline(curline, sizeof(curline));
+	//std::cout<<curline;
 	int wordcount = NEAT::getUnitCount(curline, delimiters);
 	int curwordnum = 0;
 

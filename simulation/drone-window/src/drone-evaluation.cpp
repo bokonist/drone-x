@@ -31,7 +31,7 @@ Population *drone_test(int gens)
     memset (genes, 0, NEAT::num_runs * sizeof(int));
     memset (nodes, 0, NEAT::num_runs * sizeof(int));
 
-    ifstream iFile("dronestartgenes",ios::in);
+    ifstream iFile("/home/jay/gitfiles/drone-x/simulation/drone-window/dronestartgenes",ios::in);
 
     cout<<"START DRONE TEST"<<endl;
 
