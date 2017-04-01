@@ -3,6 +3,8 @@
 #include <drone.h>
 #include "bits/stdc++.h"
 #include <SOIL/SOIL.h>
+#include <population.h>
+#include <drone-evaluation.h>
 
 using namespace std;
 
