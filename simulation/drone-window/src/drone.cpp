@@ -1,4 +1,4 @@
-#include <GL/glut.h>
+#include <GL/freeglut.h>
 #include <vector>
 #include <drone.h>
 #include "bits/stdc++.h"
@@ -148,6 +148,7 @@ void resetSimulation() // to reset game
 	movementX=0;
 	movementY=0;
 	obstacleList.clear();
+	inputKey.clear();
 }
 
 void hitDetection()
@@ -340,7 +341,7 @@ void draw()
 			}
 		}
 		int randno=0;
-		if(temp==75) // generate new obstable
+		if(temp==120) // generate new obstable
 		{
 			
 			temp=0;
@@ -387,9 +388,10 @@ void draw()
 
 
 
-int countUp,countDown;
+//int countUp,countDown;
 void movePhysics() // for smooth movements
 {
+	/*
 	int ii;
 	for(ii=0;ii<inputKey.size();ii++)	
 	{
@@ -423,8 +425,27 @@ void movePhysics() // for smooth movements
 		if(countDown>0)
 			break;
 	}
-}
+	*/
+	int ii;
+	for(ii=0;ii<inputKey.size();ii++)	
+	{
+		if(inputKey[ii]=='U')
+		{
+			if( movementY <= ( resY-( (resY/2) + (resY*0.20) ) ) )  //Up Boundary check
+			movementY+=0.001;
+			inputKey.erase(inputKey.begin()+ii);
+		}
+		else if(inputKey[ii]=='D')
+		{
+			if( movementY >= -( resY/2 - (resY*9)/100 ) ) // Down boundary check
+			movementY-=0.001;
+			inputKey.erase(inputKey.begin()+ii);
+		}					
 
+	}	
+	
+}
+/*
 void processSpecialKeys(int key, int xx, int yy)
 {
 
@@ -440,3 +461,4 @@ void processSpecialKeys(int key, int xx, int yy)
 			break;
 	}
 }
+*/

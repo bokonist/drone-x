@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-extern double queuedMilliseconds,prev0,fps,responseTime,score,syncDrone;
-extern int movementY,movementX,speed,dronePhy;
+extern double queuedMilliseconds,prev0,fps,responseTime,score,syncDrone,movementX,movementY;
+extern int speed,dronePhy;
 extern int resX,resY;
 extern bool droneAlive;
 
