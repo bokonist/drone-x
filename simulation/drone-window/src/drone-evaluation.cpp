@@ -46,6 +46,7 @@ Population *drone_test(int gens)
     for(expcount=0;expcount<NEAT::num_runs;expcount++) 
     {
       //Spawn the Population
+        cout<<"new experiment\n";
       cout<<"Spawning Population off dronestartgenes"<<endl;
 
       pop=new Population(start_genome,NEAT::pop_size);
@@ -76,7 +77,7 @@ Population *drone_test(int gens)
           evals[expcount]=NEAT::pop_size*(gen-1)+winnernum;
           genes[expcount]=winnergenes;
           nodes[expcount]=winnernodes;
-          gen=gens;
+          //gen=gens; // this is to stop if success
         }
 
         //Clear output filename
@@ -84,7 +85,7 @@ Population *drone_test(int gens)
         delete fnamebuf;
       }
 
-      if (expcount<NEAT::num_runs-1) 
+    if (expcount<NEAT::num_runs-1) 
         delete pop;
     }
 
@@ -170,7 +171,7 @@ bool drone_evaluate(Organism *org)
     {
      //   cout<<"drone is alive";
         in[0]=1.0; //bias
-        in[1]=org->normalized_x;
+        in[1]=1-org->normalized_x;
         in[2]=org->normalized_y;
         in[3]=0;//defaults
         in[4]=0;
@@ -178,12 +179,12 @@ bool drone_evaluate(Organism *org)
         in[6]=0;
         if(obstacleList.size()>=1)
         {
-            in[3]=(obstacleList.front()).norm_x;
+            in[3]=1-(obstacleList.front()).norm_x;
             in[4]=(obstacleList.front()).norm_y;
         }
         if(obstacleList.size() >=2)
         {
-            in[5]=(obstacleList.at(1)).norm_x;
+            in[5]=1-(obstacleList.at(1)).norm_x;
             in[6]=(obstacleList.at(1)).norm_y;
         }
         net->load_sensors(in);
@@ -203,23 +204,41 @@ bool drone_evaluate(Organism *org)
         i=0;
         if(out[0]>=0.5)
         {
+            if( !(movementY <= ( resY-( (resY/2) + (resY*0.20) ) )) )
+            {
+                cout<<"boundaryUP";
+                if(org->movesMade > 5)
+                    org->movesMade--;
+                goto asd1;
+            }            
+            org->movesMade++;
             inputKey.push_back('U');
-            org->movesMade++;
+            
         }
-        if(out[1]>= 0.5)
+asd1:   if(out[1]>= 0.5)
         {
+            if( !(movementY >= -( resY/2 - (resY*9)/100 )) )
+            {
+                cout<<"boundaryDOWN";
+                if(org->movesMade > 5)
+                    org->movesMade--;
+                goto asd2;
+            }
+            org->movesMade++;
             inputKey.push_back('D');
-            org->movesMade++;
         }
-        if(score!=0)
-        {
-            //cout<<"curscore"<<score<<endl;
-            org->fitness=score;
-        }
+asd2:
         mixedStepLoop();
         draw();
         org->droneIsAlive= droneAlive;
         net->flush();
+    }
+    org->fitness= score * (org->movesMade);
+    
+    if(score < 2 || org->movesMade == 0 )
+    {
+        cout<<"undesirable fitness "<<org->fitness<<endl;
+        org->fitness=0.0001;
     }
     resetSimulation();
     if (success) 
@@ -239,13 +258,13 @@ bool drone_evaluate(Organism *org)
     }
 
     #ifndef NO_SCREEN_OUT
-    cout<<"Org "<<(org->gnome)->genome_id<<"                                     error: "<<errorsum<<"  ["<<out[0]<<" "<<out[1]<<" "<<out[2]<<" "<<out[3]<<"]"<<endl;
-    cout<<"Org "<<(org->gnome)->genome_id<<"                                     fitness: "<<org->fitness<<endl;
+    cout<<"Org "<<(org->gnome)->genome_id<<"         error: "<<errorsum<<"  ["<<out[0]<<" "<<out[1]<<"]"<<endl;
+    cout<<"Org "<<(org->gnome)->genome_id<<"         fitness: "<<org->fitness<<endl;
     #endif
 
     //  if (errorsum<0.05) { 
     //if (errorsum<0.2) {
-    if (org->movesMade >= 1) 
+    if (org->fitness >= 1) 
     {
       org->winner=true;
       return true;

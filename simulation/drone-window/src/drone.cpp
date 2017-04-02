@@ -10,6 +10,7 @@ using namespace std;
 
 // some defs for code readability
 #define MISSILE 2
+#define AIMED_MISSILE 3
 #define LAYER1 texName[0]
 #define LAYER2 texName[1]
 #define LAYER3 texName[2]
@@ -52,7 +53,7 @@ void mixedStepLoop() // to update frame
         queuedMilliseconds -= responseTime;
         glutPostRedisplay();
     }
-    score+=(timeElapsedMs/1000);
+   // score+=(timeElapsedMs/1000);
     prev0=now;
 }
 
@@ -321,9 +322,15 @@ void draw()
 		glColor3f(1,1,1);
 		for(ii=0;ii<obstacleList.size();ii++)
 		{
+			/*todo : add the code to update the evaded variable, if the drone is in the path of the obstable*/
 			obstacleList[ii].objdisp-=0.0047*resX;
-			if ( obstacleList[ii].objdisp== -( resX+(resX*0.32) ) )
+			if ( obstacleList[ii].objdisp<= -( resX+(resX*0.32) ) )
 			{
+				//if(obstacleList[ii].evaded)
+				if(obstacleList[ii].type== AIMED_MISSILE)
+					score+=10;
+				else
+					score+=5;
 				obstacleList.erase(obstacleList.begin()+ii);
 			}
 			else
@@ -332,25 +339,28 @@ void draw()
 				drawObstacle(obstacleList[ii].x, obstacleList[ii].y, obstacleList[ii].type,obstacleList[ii].objdisp);
 			}
 		}
-
+		int randno=0;
 		if(temp==75) // generate new obstable
 		{
+			
 			temp=0;
-			if((rand()%10) < 4) // 40% chance of launched missile being aimed at the drone. this is to discourage the drone standing still and getting high scores.
+			randno= rand();
+			if((randno %10) < 4) // 40% chance of launched missile being aimed at the drone. this is to discourage the drone standing still and getting high scores.
 			{
-				tx= resX+(rand()%(31*resX/100));
+				tx= resX+(randno %(31*resX/100));
 				ty= movementY+resY/2 + 20;
+				obj.type=AIMED_MISSILE;
 			}
 			else
 			{
-				tx= resX+(rand()%(31*resX/100));
-				ty= (resY*10/100)+rand()%(83*resY/100);	
+				tx= resX+(randno %(31*resX/100));
+				ty= (resY*10/100)+ randno %(83*resY/100);
+				obj.type= MISSILE;	
 			}
 			obj.x=tx;
 			obj.y=ty;
 			obj.norm_x = tx/resX;
 			obj.norm_y = ty/resY;
-			obj.type= MISSILE;
 			obj.objdisp=0;
 			obstacleList.push_back(obj);
 		}
@@ -370,7 +380,7 @@ void draw()
 	{
 		firstRun=false;
 		NEAT::Population *p=0;
-    	p = drone_test(100);
+    	p = drone_test(1000); //run 1000 generations on drone
     }
 	glutSwapBuffers();
 }

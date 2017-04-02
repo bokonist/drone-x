@@ -12,6 +12,7 @@ class obstacle // data structure for obstacles
 		double norm_x,norm_y;
 		int type; //for future expansion
 		int objdisp; // object displacement
+		bool evaded; // if this obstable was evaded by the drone
 };
 
 extern vector<obstacle> obstacleList;

@@ -842,7 +842,7 @@ bool Population::epoch(int generation) {
 
 	}
 
-	//cout<<"Reproduction Complete"<<endl;
+	std::cout<<"Reproduction Complete\n";
 
 
 	//Destroy and remove the old generation from the organisms and species  
