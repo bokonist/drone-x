@@ -1,6 +1,6 @@
 #include "drone-evaluation.h"
 #include "drone.h"
-#include <GL/glut.h>
+#include <GL/freeglut.h>
 #include <stdlib.h>
 #include <cstring>
 using namespace NEAT;
@@ -233,7 +233,7 @@ asd2:
         org->droneIsAlive= droneAlive;
         net->flush();
     }
-    org->fitness= score * (org->movesMade);
+    org->fitness= score + (org->movesMade*10);
     
     if(score < 2 || org->movesMade == 0 )
     {
