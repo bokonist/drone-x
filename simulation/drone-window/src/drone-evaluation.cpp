@@ -229,7 +229,7 @@ asd1:   if(out[1]>= 0.5)
         }
 asd2:
         mixedStepLoop();
-        draw();
+        glutMainLoopEvent();
         org->droneIsAlive= droneAlive;
         net->flush();
     }
