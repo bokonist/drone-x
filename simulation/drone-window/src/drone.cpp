@@ -154,18 +154,22 @@ void resetSimulation() // to reset game
 void hitDetection()
 {
 	for(ii=0;ii<obstacleList.size();ii++)
-	{	// difference in distance between drone initial X and obstacle size	         	 Difference in distance between drone centre Y and obstacle centre Y , -30 because drone png has excessive transparent part																					
-		if(((abs( (movementX)-( obstacleList[ii].x+obstacleList[ii].objdisp) ) )<= (resX*0.059+resX*0.088-50) ) && ( abs( (movementY+resY/2+resY*0.20/2)-(obstacleList[ii].y+resY*0.052/2) ) <= (resY*0.052/2+resY*0.20/2-30) ) )
+	{	
+		// difference in distance between drone initial X and obstacle size	         	
+		if(( abs( (movementY+resY/2+resY*0.20/2)-(obstacleList[ii].y+resY*0.052/2) ) <= (resY*0.052/2+resY*0.20/2-30)))
 		{
-		//printf("\t\tHIT:%d %d %d %d \n",abs((movementX)-(obstacleList[ii].x+obstacleList[ii].objdisp)),abs((movementY+resY/2)-(obstacleList[ii].y)),(movementY+resY/2),(obstacleList[ii].y));
-			cout<<int(score)<<endl;
-			droneAlive=false;
-			 //start from beginning	
+			obstacleList[ii].evaded=true;
+			// Difference in distance between drone centre Y and obstacle centre Y , -30 because drone png has excessive transparent part																					
+			if(((abs( (movementX)-( obstacleList[ii].x+obstacleList[ii].objdisp) ) )<= (resX*0.059+resX*0.088-50) ) )
+			{
+			//printf("\t\tHIT:%d %d %d %d \n",abs((movementX)-(obstacleList[ii].x+obstacleList[ii].objdisp)),abs((movementY+resY/2)-(obstacleList[ii].y)),(movementY+resY/2),(obstacleList[ii].y));
+				cout<<int(score)<<endl;
+				droneAlive=false;
+			 	//start from beginning	
+			}
 		}
 	}
-
 }
-
 
 void initialiseList()
 {
@@ -327,11 +331,15 @@ void draw()
 			obstacleList[ii].objdisp-=0.0047*resX;
 			if ( obstacleList[ii].objdisp<= -( resX+(resX*0.32) ) )
 			{
-				//if(obstacleList[ii].evaded)
-				if(obstacleList[ii].type== AIMED_MISSILE)
-					score+=10;
+				if(obstacleList[ii].evaded)
+				{
+					if(obstacleList[ii].type== AIMED_MISSILE)
+						score+=10;
+					else
+						score+=5;
+				}
 				else
-					score+=5;
+					score+=1;
 				obstacleList.erase(obstacleList.begin()+ii);
 			}
 			else
@@ -427,18 +435,20 @@ void movePhysics() // for smooth movements
 	}
 	*/
 	int ii;
+	double s=0.001;
+	int multiplier=3;
 	for(ii=0;ii<inputKey.size();ii++)	
 	{
 		if(inputKey[ii]=='U')
 		{
 			if( movementY <= ( resY-( (resY/2) + (resY*0.20) ) ) )  //Up Boundary check
-			movementY+=0.001;
+			movementY+=s*multiplier;
 			inputKey.erase(inputKey.begin()+ii);
 		}
 		else if(inputKey[ii]=='D')
 		{
 			if( movementY >= -( resY/2 - (resY*9)/100 ) ) // Down boundary check
-			movementY-=0.001;
+			movementY-=s*multiplier;
 			inputKey.erase(inputKey.begin()+ii);
 		}					
 

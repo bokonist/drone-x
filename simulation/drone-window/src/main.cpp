@@ -47,6 +47,7 @@ int main(int argc, char** argv)
    queuedMilliseconds=0;
    prev0=0;
    fps=60;
+   fps=180;
    responseTime=(1/fps)*1000;
 
    //..Rendering Resolution

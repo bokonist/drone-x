@@ -31,7 +31,7 @@ Population *drone_test(int gens)
     memset (genes, 0, NEAT::num_runs * sizeof(int));
     memset (nodes, 0, NEAT::num_runs * sizeof(int));
 
-    ifstream iFile("dronestartgenes",ios::in);
+    ifstream iFile("dronestartgenesMIN",ios::in);
 
     cout<<"START DRONE TEST"<<endl;
 
@@ -129,7 +129,7 @@ bool drone_evaluate(Organism *org)
 {
     cout<<"new organism\n";
     Network *net;
-    double out[2]; //The two outputs
+    double out[1]; //The two outputs
     double this_out; //The current output
     int count;
     double errorsum;
@@ -202,24 +202,52 @@ bool drone_evaluate(Organism *org)
             out[i++]=(*(it))->activation;
         }
         i=0;
-        if(out[0]>=0.5)
+        /*if(out[0] >=0.5)
+        {
+            //stay in current pos. no move.
+        }
+        else if(out[1]>=0.5) //move up
         {
             if( !(movementY <= ( resY-( (resY/2) + (resY*0.20) ) )) )
             {
-                cout<<"boundaryUP";
+               // cout<<"boundaryUP";
                 if(org->movesMade > 5)
                     org->movesMade--;
-                goto asd1;
+                goto asd2;
             }            
             org->movesMade++;
             inputKey.push_back('U');
             
         }
-asd1:   if(out[1]>= 0.5)
+        else if(out[1] < 0.5) //move down
         {
             if( !(movementY >= -( resY/2 - (resY*9)/100 )) )
             {
-                cout<<"boundaryDOWN";
+               // cout<<"boundaryDOWN";
+                if(org->movesMade > 5)
+                    org->movesMade--;
+                goto asd2;
+            }
+            org->movesMade++;
+            inputKey.push_back('D');
+        }*/
+        if(out[0] >= 0.5)
+        {
+            if( !(movementY <= ( resY-( (resY/2) + (resY*0.20) ) )) )
+            {
+               // cout<<"boundaryUP";
+                if(org->movesMade > 5)
+                    org->movesMade--;
+                goto asd2;
+            }            
+            org->movesMade++;
+            inputKey.push_back('U');
+        }
+        else
+        {
+            if( !(movementY >= -( resY/2 - (resY*9)/100 )) )
+            {
+               // cout<<"boundaryDOWN";
                 if(org->movesMade > 5)
                     org->movesMade--;
                 goto asd2;
@@ -233,13 +261,15 @@ asd2:
         org->droneIsAlive= droneAlive;
         net->flush();
     }
-    org->fitness= score + (org->movesMade*10);
+    cout<<"\nscore:"<<score<<"\tmoves:"<<org->movesMade<<endl;
+    org->fitness= score; //+ (org->movesMade*10);
     
     if(score < 2 || org->movesMade == 0 )
     {
         cout<<"undesirable fitness "<<org->fitness<<endl;
         org->fitness=0.0001;
     }
+    int tscore=score;
     resetSimulation();
     if (success) 
     {
@@ -264,7 +294,7 @@ asd2:
 
     //  if (errorsum<0.05) { 
     //if (errorsum<0.2) {
-    if (org->fitness >= 10) 
+    if (tscore >= 10) //evaded atleast 2 missiles or 1 aimed_missile
     {
       org->winner=true;
       return true;
