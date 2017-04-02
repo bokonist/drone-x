@@ -1,4 +1,4 @@
-#include <GL/glut.h>
+#include <GL/freeglut.h>
 #include <vector>
 #include <drone.h>
 #include "bits/stdc++.h"
@@ -10,6 +10,7 @@ using namespace std;
 
 // some defs for code readability
 #define MISSILE 2
+#define AIMED_MISSILE 3
 #define LAYER1 texName[0]
 #define LAYER2 texName[1]
 #define LAYER3 texName[2]
@@ -19,7 +20,7 @@ using namespace std;
 GLuint dlist[5];
 int width, height,tx,ty;
 static GLuint texName[17];
-int movementY,movementX;
+double movementY,movementX;
 unsigned char* image;
 float groundX,skyX,treeXfar,treeXnear;
 int ii;
@@ -28,6 +29,7 @@ int ii;
 class obstacle obj;
 
 bool firstRun=true;
+bool droneAlive=true;
 
 void mixedStepLoop() // to update frame
 {
@@ -51,7 +53,7 @@ void mixedStepLoop() // to update frame
         queuedMilliseconds -= responseTime;
         glutPostRedisplay();
     }
-    score+=(timeElapsedMs/1000);
+   // score+=(timeElapsedMs/1000);
     prev0=now;
 }
 
@@ -142,9 +144,11 @@ void resetSimulation() // to reset game
 	treeXfar=0;
 	treeXnear=0;
 	score=0;
+	droneAlive=true;
 	movementX=0;
 	movementY=0;
 	obstacleList.clear();
+	inputKey.clear();
 }
 
 void hitDetection()
@@ -155,7 +159,8 @@ void hitDetection()
 		{
 		//printf("\t\tHIT:%d %d %d %d \n",abs((movementX)-(obstacleList[ii].x+obstacleList[ii].objdisp)),abs((movementY+resY/2)-(obstacleList[ii].y)),(movementY+resY/2),(obstacleList[ii].y));
 			cout<<int(score)<<endl;
-			resetSimulation(); //start from beginning	
+			droneAlive=false;
+			 //start from beginning	
 		}
 	}
 
@@ -318,9 +323,15 @@ void draw()
 		glColor3f(1,1,1);
 		for(ii=0;ii<obstacleList.size();ii++)
 		{
+			/*todo : add the code to update the evaded variable, if the drone is in the path of the obstable*/
 			obstacleList[ii].objdisp-=0.0047*resX;
-			if ( obstacleList[ii].objdisp== -( resX+(resX*0.32) ) )
+			if ( obstacleList[ii].objdisp<= -( resX+(resX*0.32) ) )
 			{
+				//if(obstacleList[ii].evaded)
+				if(obstacleList[ii].type== AIMED_MISSILE)
+					score+=10;
+				else
+					score+=5;
 				obstacleList.erase(obstacleList.begin()+ii);
 			}
 			else
@@ -329,25 +340,28 @@ void draw()
 				drawObstacle(obstacleList[ii].x, obstacleList[ii].y, obstacleList[ii].type,obstacleList[ii].objdisp);
 			}
 		}
-
-		if(temp==75) // generate new obstable
+		int randno=0;
+		if(temp==120) // generate new obstable
 		{
+			
 			temp=0;
-			if((rand()%10) < 4) // 40% chance of launched missile being aimed at the drone. this is to discourage the drone standing still and getting high scores.
+			randno= rand();
+			if((randno %10) < 4) // 40% chance of launched missile being aimed at the drone. this is to discourage the drone standing still and getting high scores.
 			{
-				tx= resX+(rand()%(31*resX/100));
+				tx= resX+(randno %(31*resX/100));
 				ty= movementY+resY/2 + 20;
+				obj.type=AIMED_MISSILE;
 			}
 			else
 			{
-				tx= resX+(rand()%(31*resX/100));
-				ty= (resY*10/100)+rand()%(83*resY/100);	
+				tx= resX+(randno %(31*resX/100));
+				ty= (resY*10/100)+ randno %(83*resY/100);
+				obj.type= MISSILE;	
 			}
 			obj.x=tx;
 			obj.y=ty;
 			obj.norm_x = tx/resX;
 			obj.norm_y = ty/resY;
-			obj.type= MISSILE;
 			obj.objdisp=0;
 			obstacleList.push_back(obj);
 		}
@@ -367,16 +381,17 @@ void draw()
 	{
 		firstRun=false;
 		NEAT::Population *p=0;
-    	p = drone_test(100);
+    	p = drone_test(1000); //run 1000 generations on drone
     }
 	glutSwapBuffers();
 }
 
 
 
-int countUp,countDown;
+//int countUp,countDown;
 void movePhysics() // for smooth movements
 {
+	/*
 	int ii;
 	for(ii=0;ii<inputKey.size();ii++)	
 	{
@@ -410,8 +425,27 @@ void movePhysics() // for smooth movements
 		if(countDown>0)
 			break;
 	}
-}
+	*/
+	int ii;
+	for(ii=0;ii<inputKey.size();ii++)	
+	{
+		if(inputKey[ii]=='U')
+		{
+			if( movementY <= ( resY-( (resY/2) + (resY*0.20) ) ) )  //Up Boundary check
+			movementY+=0.001;
+			inputKey.erase(inputKey.begin()+ii);
+		}
+		else if(inputKey[ii]=='D')
+		{
+			if( movementY >= -( resY/2 - (resY*9)/100 ) ) // Down boundary check
+			movementY-=0.001;
+			inputKey.erase(inputKey.begin()+ii);
+		}					
 
+	}	
+	
+}
+/*
 void processSpecialKeys(int key, int xx, int yy)
 {
 
@@ -427,3 +461,4 @@ void processSpecialKeys(int key, int xx, int yy)
 			break;
 	}
 }
+*/

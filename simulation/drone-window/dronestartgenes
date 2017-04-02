@@ -9,21 +9,31 @@ trait 7 0.7 0 0 0 0 0 0 0
 trait 8 0.8 0 0 0 0 0 0 0
 trait 9 0.9 0 0 0 0 0 0 0
 trait 10 1.0 0 0 0 0 0 0 0
+trait 11 1.0 0 0 0 0 0 0 0
+trait 12 1.0 0 0 0 0 0 0 0
+trait 13 1.0 0 0 0 0 0 0 0
+trait 14 1.0 0 0 0 0 0 0 0
 node 1 0 1 3
 node 2 0 1 1
 node 3 0 1 1
 node 4 0 1 1
 node 5 0 1 1
-node 6 0 0 2
-node 7 0 0 2
-gene 1 1 6 0.0 0 1 0 1
-gene 2 2 6 0.0 0 2 0 1
-gene 3 3 6 0.0 0 3 0 1
-gene 4 4 6 0.0 0 4 0 1
-gene 5 5 6 0.0 0 5 0 1
-gene 6 1 7 0.0 0 6 0 1
-gene 7 2 7 0.0 0 7 0 1
-gene 8 3 7 0.0 0 8 0 1
-gene 9 4 7 0.0 0 9 0 1
-gene 10 5 7 0.0 0 10 0 1
+node 6 0 1 1
+node 7 0 1 1
+node 8 0 0 2
+node 9 0 0 2
+gene 1 1 8 0.0 0 1 0 1
+gene 2 2 8 0.0 0 2 0 1
+gene 3 3 8 0.0 0 3 0 1
+gene 4 4 8 0.0 0 4 0 1
+gene 5 5 8 0.0 0 5 0 1
+gene 6 6 8 0.0 0 6 0 1
+gene 7 7 8 0.0 0 7 0 1
+gene 8 1 9 0.0 0 8 0 1
+gene 9 2 9 0.0 0 9 0 1
+gene 10 3 9 0.0 0 10 0 1
+gene 11 4 9 0.0 0 11 0 1
+gene 12 5 9 0.0 0 12 0 1
+gene 13 6 9 0.0 0 13 0 1
+gene 14 7 9 0.0 0 14 0 1
 genomeend 1

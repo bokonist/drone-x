@@ -1,4 +1,4 @@
-#include <GL/glut.h>
+#include <GL/freeglut.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "../include/drone.h"
@@ -59,7 +59,7 @@ int main(int argc, char** argv)
    glutInitWindowSize(1280, 720);
    glutInitWindowPosition(100, 100);
    glutCreateWindow("drone-x");
-   glutFullScreen();
+   //glutFullScreen();
    
    //.... Game mode rendering
    /*glutGameModeString("1920x1080");
@@ -76,10 +76,10 @@ int main(int argc, char** argv)
    initNeat();
    glutIgnoreKeyRepeat(1);  // keyboard repeat off
    glutDisplayFunc(draw); 
-   glutIdleFunc(mixedStepLoop);
+   //glutIdleFunc(mixedStepLoop);
    glutReshapeFunc(reshape);
    glutKeyboardFunc(keyboard);
-   glutSpecialFunc(processSpecialKeys);
+   //glutSpecialFunc(processSpecialKeys);
    glutMainLoop();
    return 0; 
 }
