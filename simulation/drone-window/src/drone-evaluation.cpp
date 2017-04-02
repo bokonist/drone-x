@@ -264,7 +264,7 @@ asd2:
 
     //  if (errorsum<0.05) { 
     //if (errorsum<0.2) {
-    if (org->fitness >= 1) 
+    if (org->fitness >= 10) 
     {
       org->winner=true;
       return true;

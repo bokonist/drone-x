@@ -20,7 +20,7 @@ using namespace std;
 GLuint dlist[5];
 int width, height,tx,ty;
 static GLuint texName[17];
-int movementY,movementX;
+double movementY,movementX;
 unsigned char* image;
 float groundX,skyX,treeXfar,treeXnear;
 int ii;
