@@ -169,6 +169,11 @@ void hitDetection()
 			}
 		}
 	}
+	//.... Boundary check kill drone.
+	/*
+	if( !( movementY <= ( resY-( (resY/2) + (resY*0.20) ) ) )  || !( movementY >= -( resY/2 - (resY*9)/100 ) ) )
+		droneAlive=false;
+	*/
 }
 
 void initialiseList()
@@ -344,8 +349,11 @@ void draw()
 			}
 			else
 			{
+				if(obstacleList[ii].type==AIMED_MISSILE)
+				glColor3ub(245,75,75);
 				//..OBSTACLES	
 				drawObstacle(obstacleList[ii].x, obstacleList[ii].y, obstacleList[ii].type,obstacleList[ii].objdisp);
+				glColor3f(1,1,1);
 			}
 		}
 		int randno=0;
