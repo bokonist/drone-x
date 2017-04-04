@@ -56,7 +56,26 @@ void mixedStepLoop() // to update frame
    // score+=(timeElapsedMs/1000);
     prev0=now;
 }
-
+void moveDroneTo(double ratio=0, double droneNormalY=0)
+{
+	double destination=0;
+	destination = resY*ratio;
+	double currentPos= droneNormalY*resY;
+	double displacement=0.48;
+	while(!(ceil(destination*100) == ceil(currentPos*100)))
+	{
+		if(ratio > droneNormalY)
+		{
+			inputKey.push_back('U');
+			currentPos += displacement ;
+		}
+		else
+		{
+			inputKey.push_back('D');
+			currentPos -= displacement ;	
+		}
+	}
+}
 void initTextures()
 {
 	vector<string> s;

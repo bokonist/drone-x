@@ -124,7 +124,6 @@ Population *drone_test(int gens)
     return pop;
 
 }
-
 bool drone_evaluate(Organism *org) 
 {
     cout<<"new organism\n";
@@ -167,6 +166,7 @@ bool drone_evaluate(Organism *org)
     //cout<<"DEPTH: "<<net_depth<<endl;
 
     //Load and activate the network on each input till drone is destroyed
+    char prev_move='a', currentmove='b';
     while(org->droneIsAlive) 
     {
      //   cout<<"drone is alive";
@@ -231,7 +231,8 @@ bool drone_evaluate(Organism *org)
             org->movesMade++;
             inputKey.push_back('D');
         }*/
-        if(out[0] >= 0.5)
+
+        /*if(out[0] >= 0.5)
         {
             if( !(movementY <= ( resY-( (resY/2) + (resY*0.20) ) )) )
             {
@@ -239,9 +240,12 @@ bool drone_evaluate(Organism *org)
                 if(org->movesMade > 5)
                     org->movesMade--;
                 goto asd2;
-            }            
-            org->movesMade++;
-            inputKey.push_back('U');
+            }
+            currentmove= 'U';
+            if(prev_move != currentmove)
+                org->movesMade++;
+            inputKey.push_back(currentmove);
+            prev_move= currentmove;
         }
         else
         {
@@ -252,17 +256,22 @@ bool drone_evaluate(Organism *org)
                     org->movesMade--;
                 goto asd2;
             }
-            org->movesMade++;
-            inputKey.push_back('D');
+            currentmove= 'D';
+            if(prev_move != currentmove)
+                org->movesMade++;
+            inputKey.push_back(currentmove);
+            prev_move= currentmove;
         }
-asd2:
+asd2:*/
+        if(out[0]>=0)
+            moveDroneTo(out[0],org->normalized_y);
         mixedStepLoop();
         glutMainLoopEvent();
         org->droneIsAlive= droneAlive;
         net->flush();
     }
     cout<<"\nscore:"<<score<<"\tmoves:"<<org->movesMade<<endl;
-    org->fitness= score; //+ (org->movesMade*10);
+    org->fitness= score + (org->movesMade*10);
     
     if(score < 2 || org->movesMade == 0 )
     {
