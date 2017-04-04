@@ -170,10 +170,10 @@ void hitDetection()
 		}
 	}
 	//.... Boundary check kill drone.
-	/*
+	
 	if( !( movementY <= ( resY-( (resY/2) + (resY*0.20) ) ) )  || !( movementY >= -( resY/2 - (resY*9)/100 ) ) )
 		droneAlive=false;
-	*/
+	
 }
 
 void initialiseList()
@@ -444,7 +444,7 @@ void movePhysics() // for smooth movements
 	*/
 	int ii;
 	double s=0.001;
-	int multiplier=3;
+	int multiplier=1;
 	for(ii=0;ii<inputKey.size();ii++)	
 	{
 		if(inputKey[ii]=='U')
