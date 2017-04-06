@@ -4,10 +4,13 @@
 #include <stdlib.h>
 #include <cstring>
 using namespace NEAT;
+
+int org_count=0;
 Population *drone_test(int gens) 
 {
     Population *pop=0;
     Genome *start_genome;
+
     char curword[20];
     int id;
 
@@ -57,6 +60,7 @@ Population *drone_test(int gens)
       for (gen=1;gen<=gens;gen++) 
       {
         cout<<"Epoch "<<gen<<endl;	
+        currentgen=gen;
 
         //This is how to make a custom filename
         fnamebuf=new ostringstream();
@@ -124,12 +128,15 @@ Population *drone_test(int gens)
     return pop;
 
 }
-
 bool drone_evaluate(Organism *org) 
 {
     cout<<"new organism\n";
+    currentorganism= (org_count % pop_size)+1;
+    if(org_count== pop_size)
+        org_count=pop_size;
+    org_count++;
     Network *net;
-    double out[1]; //The two outputs
+    double out[2]; //The two outputs
     double this_out; //The current output
     int count;
     double errorsum;
@@ -167,6 +174,7 @@ bool drone_evaluate(Organism *org)
     //cout<<"DEPTH: "<<net_depth<<endl;
 
     //Load and activate the network on each input till drone is destroyed
+    char prev_move='a', currentmove='b';
     while(org->droneIsAlive) 
     {
      //   cout<<"drone is alive";
@@ -177,16 +185,22 @@ bool drone_evaluate(Organism *org)
         in[4]=0;
         in[5]=0;
         in[6]=0;
+        //cout<<"size is "<<obstacleList.size()<<endl;
         if(obstacleList.size()>=1)
         {
-            in[3]=1-(obstacleList.front()).norm_x;
+            //cout<<"loaded obst1 ";
+            in[3]=((obstacleList.front()).x + (obstacleList.front()).objdisp)/resX;
             in[4]=(obstacleList.front()).norm_y;
+             
         }
         if(obstacleList.size() >=2)
         {
-            in[5]=1-(obstacleList.at(1)).norm_x;
+            //cout<<"loaded obst2\n";
+            in[5]=((obstacleList.at(1)).x + (obstacleList.at(1)).objdisp)/resX;
             in[6]=(obstacleList.at(1)).norm_y;
+            //cout<<in[5]<< " " <<in[6]<<endl;
         }
+        //cout<<in[0]<< " " << in[1]<< " " <<in[2]<< " " <<in[3]<< " " <<in[4]<< " " <<in[5]<< " " <<in[6]<< " "<<endl;
         net->load_sensors(in);
         //Relax net and get output
         success=net->activate();
@@ -202,58 +216,33 @@ bool drone_evaluate(Organism *org)
             out[i++]=(*(it))->activation;
         }
         i=0;
-        /*if(out[0] >=0.5)
-        {
-            //stay in current pos. no move.
-        }
-        else if(out[1]>=0.5) //move up
-        {
-            if( !(movementY <= ( resY-( (resY/2) + (resY*0.20) ) )) )
-            {
-               // cout<<"boundaryUP";
-                if(org->movesMade > 5)
-                    org->movesMade--;
-                goto asd2;
-            }            
+        /*if(out[0]>=0.5) //move up
+        {           
             org->movesMade++;
             inputKey.push_back('U');
             
         }
-        else if(out[1] < 0.5) //move down
+        if(out[1] >= 0.5) //move down
         {
-            if( !(movementY >= -( resY/2 - (resY*9)/100 )) )
-            {
-               // cout<<"boundaryDOWN";
-                if(org->movesMade > 5)
-                    org->movesMade--;
-                goto asd2;
-            }
             org->movesMade++;
             inputKey.push_back('D');
         }*/
+
         if(out[0] >= 0.5)
         {
-            if( !(movementY <= ( resY-( (resY/2) + (resY*0.20) ) )) )
-            {
-               // cout<<"boundaryUP";
-                if(org->movesMade > 5)
-                    org->movesMade--;
-                goto asd2;
-            }            
-            org->movesMade++;
-            inputKey.push_back('U');
+            currentmove= 'U';
+            if(prev_move != currentmove)
+                org->movesMade++;
+            inputKey.push_back(currentmove);
+            prev_move= currentmove;
         }
         else
         {
-            if( !(movementY >= -( resY/2 - (resY*9)/100 )) )
-            {
-               // cout<<"boundaryDOWN";
-                if(org->movesMade > 5)
-                    org->movesMade--;
-                goto asd2;
-            }
-            org->movesMade++;
-            inputKey.push_back('D');
+            currentmove= 'D';
+            if(prev_move != currentmove)
+                org->movesMade++;
+            inputKey.push_back(currentmove);
+            prev_move= currentmove;
         }
 asd2:
         mixedStepLoop();
@@ -262,12 +251,12 @@ asd2:
         net->flush();
     }
     cout<<"\nscore:"<<score<<"\tmoves:"<<org->movesMade<<endl;
-    org->fitness= score; //+ (org->movesMade*10);
+    org->fitness= score + (org->movesMade*10);
     
-    if(score < 2 || org->movesMade == 0 )
+    if(score < 10 || org->movesMade == 0 )
     {
         cout<<"undesirable fitness "<<org->fitness<<endl;
-        org->fitness=0.0001;
+        org->fitness=0.0001*score;
     }
     int tscore=score;
     resetSimulation();
@@ -294,7 +283,7 @@ asd2:
 
     //  if (errorsum<0.05) { 
     //if (errorsum<0.2) {
-    if (tscore >= 10) //evaded atleast 2 missiles or 1 aimed_missile
+    if (tscore >= 20) //evaded atleast 2 missiles or 1 aimed_missile
     {
       org->winner=true;
       return true;

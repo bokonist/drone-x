@@ -4,11 +4,12 @@ extern double queuedMilliseconds,prev0,fps,responseTime,score,syncDrone,movement
 extern int speed,dronePhy;
 extern int resX,resY;
 extern bool droneAlive;
+extern int currentgen, currentorganism;
 
 class obstacle // data structure for obstacles
 {
 	public:
-		int x,y; // coordinates
+		double x,y; // coordinates
 		double norm_x,norm_y;
 		int type; //for future expansion
 		int objdisp; // object displacement

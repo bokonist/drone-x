@@ -18,12 +18,14 @@ using namespace std;
 #define MISSILETEXTURE texName[3]
 
 GLuint dlist[5];
-int width, height,tx,ty;
+int width, height;
+double tx,ty;
 static GLuint texName[17];
 double movementY,movementX;
 unsigned char* image;
 float groundX,skyX,treeXfar,treeXnear;
 int ii;
+int currentgen,currentorganism;
 
 //obstacle obj;
 class obstacle obj;
@@ -324,7 +326,7 @@ void draw()
 		glColor3f(1,1,1);
 		int tempscore;
 		tempscore=score;
-		string str="SCORE: "+to_string(tempscore);
+		string str="SCORE: "+to_string(tempscore) + "   Generation : " + to_string(currentgen) + "   Organism : " + to_string(currentorganism);
 		const char * c = str.c_str();
 		renderStrokeFont(resX*0.092,resY*0.95,3,c);
 
@@ -334,7 +336,7 @@ void draw()
 		{
 			/*todo : add the code to update the evaded variable, if the drone is in the path of the obstable*/
 			obstacleList[ii].objdisp-=0.0047*resX;
-			if ( obstacleList[ii].objdisp<= -( resX+(resX*0.32) ) )
+			if ( obstacleList[ii].objdisp<= -( resX+(resX*0.32) ) ) // moved out of screen
 			{
 				if(obstacleList[ii].evaded)
 				{
@@ -367,7 +369,7 @@ void draw()
 				tx= resX+(randno %(31*resX/100));
 				ty= movementY+resY/2 + 20;
 				obj.type=AIMED_MISSILE;
-			}
+			} 
 			else
 			{
 				tx= resX+(randno %(31*resX/100));
@@ -378,6 +380,7 @@ void draw()
 			obj.y=ty;
 			obj.norm_x = tx/resX;
 			obj.norm_y = ty/resY;
+			cout<<obj.norm_x<< " "<<obj.norm_y<<endl;
 			obj.objdisp=0;
 			obstacleList.push_back(obj);
 		}
