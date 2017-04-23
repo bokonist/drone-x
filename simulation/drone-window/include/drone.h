@@ -4,7 +4,7 @@ extern double queuedMilliseconds,prev0,fps,responseTime,score,syncDrone,movement
 extern int speed,dronePhy;
 extern int resX,resY;
 extern bool droneAlive;
-extern int currentgen, currentorganism,seedValue;
+extern int currentgen, currentorganism;
 
 class obstacle // data structure for obstacles
 {
