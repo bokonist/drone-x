@@ -7,7 +7,7 @@
 #include "../include/drone-evaluation.h"
 
 double queuedMilliseconds,prev0,fps,responseTime,score;
-int resX,resY,dronePhy;
+int resX,resY,dronePhy,seedValue;
 vector<obstacle> obstacleList;
 vector<char> inputKey; // list of moves to be actuated
 
@@ -42,6 +42,7 @@ void initNeat()
 
 int main(int argc, char** argv)
 {
+   seedValue=atoi(argv[1]);
    dronePhy=4;
    //..frame-update setup
    queuedMilliseconds=0;
