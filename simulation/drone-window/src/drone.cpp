@@ -335,7 +335,6 @@ void draw()
 		for(ii=0;ii<obstacleList.size();ii++)
 		{
 			/*todo : add the code to update the evaded variable, if the drone is in the path of the obstable*/
-			obstacleList[ii].objdisp-=0.0047*resX;
 			if ( obstacleList[ii].objdisp<= -( resX+(resX*0.32) ) ) // moved out of screen
 			{
 				if(obstacleList[ii].evaded)
@@ -346,17 +345,17 @@ void draw()
 						score+=5;
 				}
 				else
-					score+=1;
+				score+=1;
 				obstacleList.erase(obstacleList.begin()+ii);
 			}
-			else
-			{
-				if(obstacleList[ii].type==AIMED_MISSILE)
-				glColor3ub(245,75,75);
-				//..OBSTACLES	
-				drawObstacle(obstacleList[ii].x, obstacleList[ii].y, obstacleList[ii].type,obstacleList[ii].objdisp);
-				glColor3f(1,1,1);
-			}
+			
+			obstacleList[ii].objdisp-=0.0047*resX;
+			if(obstacleList[ii].type==AIMED_MISSILE)
+			glColor3ub(245,75,75);
+			//..OBSTACLES	
+			drawObstacle(obstacleList[ii].x, obstacleList[ii].y, obstacleList[ii].type,obstacleList[ii].objdisp);
+			glColor3f(1,1,1);
+			
 		}
 		int randno=0;
 		if(temp==120) // generate new obstable
