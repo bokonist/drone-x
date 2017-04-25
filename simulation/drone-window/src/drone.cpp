@@ -140,6 +140,7 @@ int temp=0;
 
 void resetSimulation() // to reset game
 {
+	srand(seedValue);
 	temp=0;
 	groundX=0;
 	skyX=0;
@@ -173,8 +174,8 @@ void hitDetection()
 	}
 	//.... Boundary check kill drone.
 	
-	if( !( movementY <= ( resY-( (resY/2) + (resY*0.20) ) ) )  || !( movementY >= -( resY/2 - (resY*9)/100 ) ) )
-		droneAlive=false;
+	//if( !( movementY <= ( resY-( (resY/2) + (resY*0.20) ) ) )  || !( movementY >= -( resY/2 - (resY*9)/100 ) ) )
+	//	droneAlive=false;
 	
 }
 
@@ -275,6 +276,7 @@ void draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	if(opt1==0)
 	{
+		srand(seedValue);
 		initialiseList();
 		staticDrone();
 		staticSky();
@@ -335,7 +337,6 @@ void draw()
 		for(ii=0;ii<obstacleList.size();ii++)
 		{
 			/*todo : add the code to update the evaded variable, if the drone is in the path of the obstable*/
-			obstacleList[ii].objdisp-=0.0047*resX;
 			if ( obstacleList[ii].objdisp<= -( resX+(resX*0.32) ) ) // moved out of screen
 			{
 				if(obstacleList[ii].evaded)
@@ -346,17 +347,17 @@ void draw()
 						score+=5;
 				}
 				else
-					score+=1;
+				score+=1;
 				obstacleList.erase(obstacleList.begin()+ii);
 			}
-			else
-			{
-				if(obstacleList[ii].type==AIMED_MISSILE)
-				glColor3ub(245,75,75);
-				//..OBSTACLES	
-				drawObstacle(obstacleList[ii].x, obstacleList[ii].y, obstacleList[ii].type,obstacleList[ii].objdisp);
-				glColor3f(1,1,1);
-			}
+			
+			obstacleList[ii].objdisp-=0.0047*resX;
+			if(obstacleList[ii].type==AIMED_MISSILE)
+			glColor3ub(245,75,75);
+			//..OBSTACLES	
+			drawObstacle(obstacleList[ii].x, obstacleList[ii].y, obstacleList[ii].type,obstacleList[ii].objdisp);
+			glColor3f(1,1,1);
+			
 		}
 		int randno=0;
 		if(temp==120) // generate new obstable
@@ -364,18 +365,20 @@ void draw()
 			
 			temp=0;
 			randno= rand();
+			/*
 			if((randno %10) < 4) // 40% chance of launched missile being aimed at the drone. this is to discourage the drone standing still and getting high scores.
 			{
 				tx= resX+(randno %(31*resX/100));
 				ty= movementY+resY/2 + 20;
 				obj.type=AIMED_MISSILE;
 			} 
-			else
-			{
+			*/
+			//else
+			//{
 				tx= resX+(randno %(31*resX/100));
 				ty= (resY*10/100)+ randno %(83*resY/100);
 				obj.type= MISSILE;	
-			}
+			//}
 			obj.x=tx;
 			obj.y=ty;
 			obj.norm_x = tx/resX;
