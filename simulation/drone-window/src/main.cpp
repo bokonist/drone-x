@@ -7,7 +7,7 @@
 #include "../include/drone-evaluation.h"
 
 double queuedMilliseconds,prev0,fps,responseTime,score;
-int resX,resY,dronePhy,seedValue;
+int resX,resY,dronePhy,seedValue,menu;
 vector<obstacle> obstacleList;
 vector<char> inputKey; // list of moves to be actuated
 
@@ -33,6 +33,16 @@ void keyboard (unsigned char key, int x, int y)
    }
 }
 
+void mouseHandle(int btn,int state,int x,int y)
+{
+   int y1=resY-y;
+   if(btn==GLUT_LEFT_BUTTON&&state==GLUT_DOWN)
+   {
+      if(x>=454 && x<=820 && y1>=81 && y1<=112)
+      menu=1;
+   }
+}
+
 double syncDrone;
 
 void initNeat()
@@ -42,13 +52,16 @@ void initNeat()
 
 int main(int argc, char** argv)
 {
-   seedValue=atoi(argv[1]);
+   if(argc>=2)
+      seedValue=atoi(argv[1]);
+   else
+      seedValue=53; // Default seedvalue
    dronePhy=4;
    //..frame-update setup
    queuedMilliseconds=0;
    prev0=0;
    fps=60;
-   fps=180;
+   //fps=180;
    responseTime=(1/fps)*1000;
 
    //..Rendering Resolution
@@ -78,10 +91,9 @@ int main(int argc, char** argv)
    initNeat();
    glutIgnoreKeyRepeat(1);  // keyboard repeat off
    glutDisplayFunc(draw); 
-   //glutIdleFunc(mixedStepLoop);
    glutReshapeFunc(reshape);
    glutKeyboardFunc(keyboard);
-   //glutSpecialFunc(processSpecialKeys);
+   glutMouseFunc(mouseHandle);
    glutMainLoop();
    return 0; 
 }

@@ -16,11 +16,12 @@ using namespace std;
 #define LAYER3 texName[2]
 #define LAYER4 texName[16]
 #define MISSILETEXTURE texName[3]
+#define MENUSCREEN texName[17]
 
 GLuint dlist[5];
 int width, height;
 double tx,ty;
-static GLuint texName[17];
+static GLuint texName[18];
 double movementY,movementX;
 unsigned char* image;
 float groundX,skyX,treeXfar,treeXnear;
@@ -79,6 +80,8 @@ void initTextures()
 	s.push_back("res/drones/seq0010.png");
 	s.push_back("res/drones/seq0011.png");
 	s.push_back("res/terrains/layer-4.png");
+	s.push_back("res/menu/splash-bg-alt-with-menu.bmp");
+
 
 	glGenTextures(s.size(),texName);
 
@@ -105,19 +108,19 @@ void initTextures()
 void update() // to update background
 {
 
-	skyX-=0.0009*resX;
+	skyX-=0.0009*resX*3;
 	if(skyX<-resX)
 		skyX=0;
 
-	treeXfar-=0.0018*resX;
+	treeXfar-=0.0018*resX*3;
 	if(treeXfar<-resX)
 		treeXfar=0;
 
-	treeXnear-=0.0020*resX;
+	treeXnear-=0.0020*resX*3;
 	if(treeXnear<-resX)
 		treeXnear=0;
 
-	groundX-=0.0035*resX;
+	groundX-=0.0035*resX*3;
 	if(groundX<-resX)
 		groundX=0;
 }
@@ -165,7 +168,6 @@ void hitDetection()
 			// Difference in distance between drone centre Y and obstacle centre Y , -30 because drone png has excessive transparent part																					
 			if(((abs( (movementX)-( obstacleList[ii].x+obstacleList[ii].objdisp) ) )<= (resX*0.059+resX*0.088-50) ) )
 			{
-			//printf("\t\tHIT:%d %d %d %d \n",abs((movementX)-(obstacleList[ii].x+obstacleList[ii].objdisp)),abs((movementY+resY/2)-(obstacleList[ii].y)),(movementY+resY/2),(obstacleList[ii].y));
 				cout<<int(score)<<endl;
 				droneAlive=false;
 			 	//start from beginning	
@@ -178,19 +180,15 @@ void hitDetection()
 	//	droneAlive=false;
 	
 }
-
+int baseIndex;
 void initialiseList()
 {
-	dlist[0]=glGenLists(1);
-	dlist[1]=glGenLists(1);
-	dlist[2]=glGenLists(1);
-	dlist[3]=glGenLists(1);
-	dlist[4]=glGenLists(1);
+	baseIndex=glGenLists(1);
 }
 
 void staticGround()
 {
-	glNewList(dlist[0], GL_COMPILE);
+	glNewList(baseIndex+0, GL_COMPILE);
 	glBindTexture(GL_TEXTURE_2D, LAYER3);
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0, 0.0); glVertex3f(0,0,0);
@@ -203,7 +201,7 @@ void staticGround()
 
 void staticSky()
 {	
-	glNewList(dlist[1], GL_COMPILE);
+	glNewList(baseIndex+1, GL_COMPILE);
 	glBindTexture(GL_TEXTURE_2D, LAYER1);
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0, 0.0); glVertex3f(0,0,0);
@@ -216,7 +214,7 @@ void staticSky()
 
 void staticTreeFar()
 {
-	glNewList(dlist[2], GL_COMPILE);
+	glNewList(baseIndex+2, GL_COMPILE);
 	glBindTexture(GL_TEXTURE_2D, LAYER2);	
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0, 0.0); glVertex3f(0,0,0);
@@ -230,7 +228,7 @@ void staticTreeFar()
 
 void staticTreeNear()
 {
-	glNewList(dlist[4], GL_COMPILE);
+	glNewList(baseIndex+4, GL_COMPILE);
 	glBindTexture(GL_TEXTURE_2D, LAYER4);	
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0, 0.0); glVertex3f(0,0,0);
@@ -243,7 +241,7 @@ void staticTreeNear()
 
 void staticDrone()
 {
-	glNewList(dlist[3], GL_COMPILE);
+	glNewList(baseIndex+3, GL_COMPILE);
 			glBegin(GL_QUADS);
 			glTexCoord2f(0.0, 0.0); glVertex3f(0,resY/2,0);
 			glTexCoord2f(1.0, 0.0); glVertex3f(resX*0.088,resY/2,0);
@@ -268,14 +266,17 @@ void renderStrokeFont(int x,int y,int z,const char* temp)
 }
 
 
-int opt1;
+int runonce;
+
 void draw()
 {
 	
 	glClearColor (0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	if(opt1==0)
+	if(menu==0||runonce==0)
 	{
+		if(runonce==0)
+		{
 		srand(seedValue);
 		initialiseList();
 		staticDrone();
@@ -283,7 +284,19 @@ void draw()
 		staticTreeFar();
 		staticTreeNear();
 		staticGround();
-		opt1=1;
+		runonce++;
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		}
+		else
+		{
+		glBindTexture(GL_TEXTURE_2D, MENUSCREEN);
+		glBegin(GL_QUADS);
+			glTexCoord2f(0.0, 0.0); glVertex3f(0,0,0);
+			glTexCoord2f(1.0, 0.0); glVertex3f(resX,0,0);
+			glTexCoord2f(1.0, -1.0); glVertex3f(resX,resY,0);
+			glTexCoord2f(0.0, -1.0); glVertex3f(0,resY,0);
+		glEnd();
+		}
 	}
 	else
 	{
@@ -292,25 +305,25 @@ void draw()
 		//SKY
 		glPushMatrix();
 		glTranslatef(skyX,0,0);
-		glCallList(dlist[1]);
+		glCallList(baseIndex+1);
 		glPopMatrix();
 
 		//TREE FAR
 		glPushMatrix();
 		glTranslatef(treeXfar,0,0);
-		glCallList(dlist[2]);
+		glCallList(baseIndex+2);
 		glPopMatrix();
 
 		//TREE NEAR
 		glPushMatrix();
 		glTranslatef(treeXnear,0,0);
-		glCallList(dlist[4]);
+		glCallList(baseIndex+4);
 		glPopMatrix();
 
 		//GROUND	
 		glPushMatrix();
 		glTranslatef(groundX,0,0);
-		glCallList(dlist[0]);
+		glCallList(baseIndex+0);
 		glPopMatrix();
 
 		//TOP-SCORE BAR
@@ -351,7 +364,7 @@ void draw()
 				obstacleList.erase(obstacleList.begin()+ii);
 			}
 			
-			obstacleList[ii].objdisp-=0.0047*resX;
+			obstacleList[ii].objdisp-=0.0047*resX*3;
 			if(obstacleList[ii].type==AIMED_MISSILE)
 			glColor3ub(245,75,75);
 			//..OBSTACLES	
@@ -360,11 +373,12 @@ void draw()
 			
 		}
 		int randno=0;
-		if(temp==120) // generate new obstable
+		if(temp==90) // generate new obstable
 		{
 			
 			temp=0;
 			randno= rand();
+			//... Aimed missile disabled for now.
 			/*
 			if((randno %10) < 4) // 40% chance of launched missile being aimed at the drone. this is to discourage the drone standing still and getting high scores.
 			{
@@ -395,7 +409,7 @@ void draw()
 		glPushMatrix();
 		glTranslatef(movementX,movementY,0);
 		glBindTexture(GL_TEXTURE_2D, texName[dronePhy]);
-		glCallList(dlist[3]);
+		glCallList(baseIndex+3);
 		glPopMatrix();
 		hitDetection();
 	}	
@@ -413,44 +427,10 @@ void draw()
 //int countUp,countDown;
 void movePhysics() // for smooth movements
 {
-	/*
-	int ii;
-	for(ii=0;ii<inputKey.size();ii++)	
-	{
-		// ...UP KEY ANIMATION  7*4=28
-		if(inputKey[ii]=='U')
-		{
-			if( movementY <= ( resY-( (resY/2) + (resY*0.20) ) ) )  //Up Boundary check
-			movementY+=0.0047*resX;
-			countUp++;
-		}					
-		if(countUp==7)
-		{	
-			countUp=0;	
-			inputKey.erase(inputKey.begin()+ii);
-		}	
-		if(countUp>0)
-			break;
-		
-		//...DOWN KEY ANIMATION  7*4=28
-		if(inputKey[ii]=='D')
-		{
-			if( movementY >= -( resY/2 - (resY*9)/100 ) ) // Down boundary check
-			movementY-=0.0047*resX;
-			countDown++;
-		}	
-		if(countDown==7)
-		{
-			countDown=0;
-			inputKey.erase(inputKey.begin()+ii);
-		}
-		if(countDown>0)
-			break;
-	}
-	*/
+
 	int ii;
 	double s=0.001;
-	int multiplier=1;
+	int multiplier=3;
 	for(ii=0;ii<inputKey.size();ii++)	
 	{
 		if(inputKey[ii]=='U')
@@ -469,20 +449,3 @@ void movePhysics() // for smooth movements
 	}	
 	
 }
-/*
-void processSpecialKeys(int key, int xx, int yy)
-{
-
-	switch (key) 
-	{
-		case GLUT_KEY_DOWN :
-				//if(movementY!=-440)
-				inputKey.push_back('D');
-			break;
-		case GLUT_KEY_UP :
-				//if(movementY!=440)
-				inputKey.push_back('U');
-			break;
-	}
-}
-*/
