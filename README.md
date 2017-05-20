@@ -24,7 +24,7 @@ A self learning AI drone to evade obstacles. The simulation is made using Opengl
 To download the repo & Run the simulation:
 
 	git clone https://github.com/bokonist/drone-x
-	cd simulation/drone-window
+	cd drone-x/simulation/drone-window
 	make
 	./drone
 
